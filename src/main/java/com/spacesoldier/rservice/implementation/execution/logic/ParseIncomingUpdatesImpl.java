@@ -1,9 +1,9 @@
 package com.spacesoldier.rservice.implementation.execution.logic;
 
 
-import com.glowbyte.restructure.entities.internal.cache.IncomingPegasusUpdate;
-import com.glowbyte.restructure.entities.internal.log.LogHelper;
-import com.glowbyte.restructure.entities.internal.log.LogMessage;
+import com.spacesoldier.rservice.entities.internal.cache.IncomingPegasusUpdate;
+import com.spacesoldier.rservice.entities.internal.log.LogHelper;
+import com.spacesoldier.rservice.entities.internal.log.LogMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

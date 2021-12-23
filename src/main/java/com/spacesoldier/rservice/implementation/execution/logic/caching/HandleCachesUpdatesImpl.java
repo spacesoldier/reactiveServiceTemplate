@@ -1,9 +1,9 @@
 package com.spacesoldier.rservice.implementation.execution.logic.caching;
 
-import com.glowbyte.restructure.caching.EntitiesCache;
-import com.glowbyte.restructure.entities.internal.cache.IncomingPegasusUpdate;
-import com.glowbyte.restructure.entities.internal.log.LogHelper;
-import com.glowbyte.restructure.entities.internal.log.LogMessage;
+import com.spacesoldier.rservice.caching.EntitiesCache;
+import com.spacesoldier.rservice.entities.internal.cache.IncomingPegasusUpdate;
+import com.spacesoldier.rservice.entities.internal.log.LogHelper;
+import com.spacesoldier.rservice.entities.internal.log.LogMessage;
 
 import java.util.function.Function;
 

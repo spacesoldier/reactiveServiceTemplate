@@ -1,7 +1,7 @@
 package com.spacesoldier.rservice.implementation.config.routing;
 
-import com.glowbyte.restructure.entities.io.IncomingRequestEnvelope;
-import com.glowbyte.restructure.streaming.manage.FluxWiresManager;
+import com.spacesoldier.rservice.entities.io.IncomingRequestEnvelope;
+import com.spacesoldier.rservice.streaming.manage.FluxWiresManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;

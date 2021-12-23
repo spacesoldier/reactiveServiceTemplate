@@ -1,7 +1,8 @@
 package com.spacesoldier.rservice.implementation.execution.logic;
 
-import com.glowbyte.restructure.entities.internal.queries.CommonAPIResponse;
-import com.glowbyte.restructure.streaming.manage.MonoWiresManager;
+
+import com.spacesoldier.rservice.entities.internal.queries.CommonAPIResponse;
+import com.spacesoldier.rservice.streaming.manage.MonoWiresManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;

@@ -1,8 +1,9 @@
 package com.spacesoldier.rservice.implementation.kafka;
 
-import com.glowbyte.restructure.streaming.manage.FluxWiresManager;
-import com.glowbyte.restructure.streaming.transformers.kafka.LogicUnitKeyValueMapper;
-import com.glowbyte.restructure.streaming.transformers.kafka.LogicUnitValueMapper;
+
+import com.spacesoldier.rservice.streaming.manage.FluxWiresManager;
+import com.spacesoldier.rservice.streaming.transformers.kafka.LogicUnitKeyValueMapper;
+import com.spacesoldier.rservice.streaming.transformers.kafka.LogicUnitValueMapper;
 import org.apache.kafka.streams.kstream.KStream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;

@@ -1,8 +1,9 @@
 package com.spacesoldier.rservice.implementation;
 
-import com.glowbyte.restructure.streaming.manage.FluxWiresManager;
-import com.glowbyte.restructure.streaming.transformers.flux.OneToManyValueTransformer;
-import com.glowbyte.restructure.streaming.transformers.flux.OneToOneValueTransformer;
+
+import com.spacesoldier.rservice.streaming.manage.FluxWiresManager;
+import com.spacesoldier.rservice.streaming.transformers.flux.OneToManyValueTransformer;
+import com.spacesoldier.rservice.streaming.transformers.flux.OneToOneValueTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
