@@ -1,9 +1,9 @@
 package com.spacesoldier.rservice.implementation.config.routing;
 
-import com.glowbyte.restructure.entities.internal.FluxRoutedEnvelope;
-import com.glowbyte.restructure.implementation.execution.routing.flux.FluxChainsRoutingImpl;
-import com.glowbyte.restructure.streaming.manage.FluxWiresManager;
-import com.glowbyte.restructure.streaming.transformers.flux.OneToOneValueTransformer;
+import com.spacesoldier.rservice.entities.internal.FluxRoutedEnvelope;
+import com.spacesoldier.rservice.implementation.execution.routing.flux.FluxChainsRoutingImpl;
+import com.spacesoldier.rservice.streaming.manage.FluxWiresManager;
+import com.spacesoldier.rservice.streaming.transformers.flux.OneToOneValueTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;

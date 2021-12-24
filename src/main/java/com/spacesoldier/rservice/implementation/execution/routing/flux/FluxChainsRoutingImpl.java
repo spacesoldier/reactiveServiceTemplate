@@ -1,7 +1,7 @@
 package com.spacesoldier.rservice.implementation.execution.routing.flux;
 
-import com.glowbyte.restructure.entities.internal.FluxRoutedEnvelope;
-import com.glowbyte.restructure.streaming.manage.FluxWiresManager;
+import com.spacesoldier.rservice.entities.internal.FluxRoutedEnvelope;
+import com.spacesoldier.rservice.streaming.manage.FluxWiresManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

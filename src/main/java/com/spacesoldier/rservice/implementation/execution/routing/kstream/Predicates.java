@@ -1,6 +1,6 @@
 package com.spacesoldier.rservice.implementation.execution.routing.kstream;
 
-import com.glowbyte.restructure.entities.internal.log.LogMessage;
+import com.spacesoldier.rservice.entities.internal.log.LogMessage;
 import org.apache.kafka.streams.kstream.Predicate;
 
 public class Predicates {

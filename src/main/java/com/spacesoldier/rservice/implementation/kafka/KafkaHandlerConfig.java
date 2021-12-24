@@ -1,6 +1,7 @@
 package com.spacesoldier.rservice.implementation.kafka;
 
 
+import com.spacesoldier.rservice.implementation.execution.routing.kstream.Predicates;
 import com.spacesoldier.rservice.streaming.manage.FluxWiresManager;
 import com.spacesoldier.rservice.streaming.transformers.kafka.LogicUnitKeyValueMapper;
 import com.spacesoldier.rservice.streaming.transformers.kafka.LogicUnitValueMapper;

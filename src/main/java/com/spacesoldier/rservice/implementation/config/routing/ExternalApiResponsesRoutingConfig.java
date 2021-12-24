@@ -1,11 +1,18 @@
 package com.spacesoldier.rservice.implementation.config.routing;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.spacesoldier.rservice.entities.external.io.ErrorCallResponse;
+import com.spacesoldier.rservice.entities.external.io.SuccessCallResultEnvelope;
 import com.spacesoldier.rservice.entities.io.IncomingRequestEnvelope;
 import com.spacesoldier.rservice.streaming.manage.FluxWiresManager;
+import org.apache.kafka.streams.KeyValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
+
+import java.util.function.BiConsumer;
 
 @Component
 public class ExternalApiResponsesRoutingConfig {
@@ -19,7 +26,8 @@ public class ExternalApiResponsesRoutingConfig {
         return (kv, err) -> {
 
             ErrorCallResponse errResponse = ErrorCallResponse.builder()
-                    .errorDesc(err.toString())
+                    .requestId(((IncomingRequestEnvelope) kv.value).getRqId())
+                    .errorMessage(err.toString())
                     .originalRequest((IncomingRequestEnvelope) kv.value)
                     .build();
 
@@ -37,10 +45,13 @@ public class ExternalApiResponsesRoutingConfig {
 
             String userDataStr = (String) userDataObj;
 
-            SuccessCallResultMsg resultMsg = gson.fromJson(userDataStr, responseValueType);
-
             SuccessCallResultEnvelope okResponse = SuccessCallResultEnvelope.builder()
-                    .payload(resultMsg)
+                    .requestId(((IncomingRequestEnvelope) kv.value).getRqId())
+                    .payload(
+                            responseValueType.cast(
+                                    gson.fromJson(userDataStr, responseValueType)
+                            )
+                    )
                     .originalRequest((IncomingRequestEnvelope) kv.value)
                     .build();
 
