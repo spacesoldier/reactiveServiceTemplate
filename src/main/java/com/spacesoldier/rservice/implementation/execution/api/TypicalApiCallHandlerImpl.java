@@ -1,8 +1,8 @@
 package com.spacesoldier.rservice.implementation.execution.api;
 
-import com.glowbyte.restructure.entities.io.IncomingRequestEnvelope;
-import com.glowbyte.restructure.streaming.manage.FluxWiresManager;
-import com.glowbyte.restructure.streaming.manage.MonoWiresManager;
+import com.spacesoldier.rservice.entities.io.IncomingRequestEnvelope;
+import com.spacesoldier.rservice.streaming.manage.FluxWiresManager;
+import com.spacesoldier.rservice.streaming.manage.MonoWiresManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;

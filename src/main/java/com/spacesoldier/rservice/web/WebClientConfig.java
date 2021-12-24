@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit;
 @Component
 public class WebClientConfig {
 
-    @Value("${user_catalog.base_url}")
+    @Value("${external_srv.base_url}")
     private String USR_BASE_URL;
 
     @Bean(name="externalAPIClient")

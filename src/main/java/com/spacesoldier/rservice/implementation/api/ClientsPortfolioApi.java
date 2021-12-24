@@ -15,7 +15,7 @@ public class ClientsPortfolioApi {
     @Autowired
     RestRequestsHandler requestsHandler;
 
-    @RequestMapping(value="/portfolio/{login}", method = RequestMethod.GET)
+    @RequestMapping(value="/testcall/{login}", method = RequestMethod.GET)
     public Mono<String> testApiCall(
             ServerWebExchange exchange
     ){

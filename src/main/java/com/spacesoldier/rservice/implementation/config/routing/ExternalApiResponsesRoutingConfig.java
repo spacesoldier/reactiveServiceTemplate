@@ -37,7 +37,7 @@ public class ExternalApiResponsesRoutingConfig {
     }
 
     @Bean(name="onSuccessCatalogRsHandler")
-    public BiConsumer<KeyValue,String> onSuccessConsumer(Class responseValueType){
+    public BiConsumer<KeyValue,String> onSuccessConsumer(){
 
         Gson gson = new GsonBuilder().create();
 
@@ -47,11 +47,7 @@ public class ExternalApiResponsesRoutingConfig {
 
             SuccessCallResultEnvelope okResponse = SuccessCallResultEnvelope.builder()
                     .requestId(((IncomingRequestEnvelope) kv.value).getRqId())
-                    .payload(
-                            responseValueType.cast(
-                                    gson.fromJson(userDataStr, responseValueType)
-                            )
-                    )
+                    .payload(userDataObj)
                     .originalRequest((IncomingRequestEnvelope) kv.value)
                     .build();
 

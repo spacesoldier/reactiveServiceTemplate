@@ -1,1 +1,2 @@
-
+external_srv:
+  base_url: http://hansolo.geekgalaxy.com/test_srv:8080

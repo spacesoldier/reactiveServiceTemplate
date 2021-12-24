@@ -1,6 +1,7 @@
 package com.spacesoldier.rservice.entities.internal.queries;
 
-import com.glowbyte.restructure.entities.io.IncomingRequestEnvelope;
+
+import com.spacesoldier.rservice.entities.io.IncomingRequestEnvelope;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.web.reactive.function.client.WebClient;

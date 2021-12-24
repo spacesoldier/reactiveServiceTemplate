@@ -1,6 +1,6 @@
 package com.spacesoldier.rservice.implementation.execution.routing.kstream;
 
-import com.glowbyte.restructure.entities.internal.log.LogHelper;
+import com.spacesoldier.rservice.entities.internal.log.LogHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
