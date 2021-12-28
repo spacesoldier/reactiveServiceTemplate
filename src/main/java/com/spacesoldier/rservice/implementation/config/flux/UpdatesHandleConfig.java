@@ -1,7 +1,7 @@
 package com.spacesoldier.rservice.implementation.config.flux;
 
 import com.spacesoldier.rservice.caching.EntitiesCache;
-import com.spacesoldier.rservice.entities.internal.cache.IncomingPegasusUpdate;
+import com.spacesoldier.rservice.entities.internal.cache.IncomingUpdate;
 import com.spacesoldier.rservice.implementation.execution.logic.caching.HandleCachesUpdatesImpl;
 import com.spacesoldier.rservice.streaming.transformers.flux.OneToOneValueTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +25,7 @@ public class UpdatesHandleConfig {
         Map<Class, Function> valueProcessors = new HashMap<>(){
             {
                 put(
-                        IncomingPegasusUpdate.class,
+                        IncomingUpdate.class,
                         HandleCachesUpdatesImpl.saveIncomingUpdate(eventsCache)
                 );
             }

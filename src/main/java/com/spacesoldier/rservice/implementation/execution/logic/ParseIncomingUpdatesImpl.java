@@ -3,7 +3,7 @@ package com.spacesoldier.rservice.implementation.execution.logic;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.spacesoldier.rservice.entities.internal.cache.IncomingPegasusUpdate;
+import com.spacesoldier.rservice.entities.internal.cache.IncomingUpdate;
 import com.spacesoldier.rservice.entities.internal.log.LogHelper;
 import com.spacesoldier.rservice.entities.internal.log.LogMessage;
 import org.apache.kafka.streams.KeyValue;
@@ -41,7 +41,7 @@ public class ParseIncomingUpdatesImpl {
 
             try {
                 // convert the received value into a request object
-                validUpdate = gson.fromJson((String) securityLimitsUpdateObj, IncomingPegasusUpdate.class);
+                validUpdate = gson.fromJson((String) securityLimitsUpdateObj, IncomingUpdate.class);
             } catch (Exception e){
                 logMsg.setStatusCode(-100);
                 logMsg.setStatusDesc(String.format(errMsgTemplate,clientIdStr, e.getMessage()));

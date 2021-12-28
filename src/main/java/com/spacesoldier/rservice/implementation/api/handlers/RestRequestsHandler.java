@@ -14,7 +14,7 @@ public class RestRequestsHandler {
 
     public Mono<String> handleTypicalRequest(ServerWebExchange request) {
 
-        return typicalApiService.buildPortfolio(request);
+        return typicalApiService.handleRequest(request);
 
     }
 }

@@ -1,9 +1,9 @@
 package com.spacesoldier.rservice.implementation.execution.logic.integration;
 
-import com.spacesoldier.rservice.entities.internal.queries.RunExternalAPICallRequest;
+import com.spacesoldier.rservice.entities.external.io.ExternalCallRequestAggregate;
+import com.spacesoldier.rservice.entities.internal.queries.PrepareExternalAPICallRequest;
 import com.spacesoldier.rservice.web.WebCallParam;
 import com.spacesoldier.rservice.web.WebErrorStatusHandlers;
-import org.apache.kafka.streams.KeyValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpMethod;
@@ -21,7 +21,7 @@ public class ExternalServiceCallLogicImpl {
     public static final String unitName = "user-catalog-caller";
     private static final Logger logger = LoggerFactory.getLogger(unitName);
 
-    public static Function<RunExternalAPICallRequest, List> prepareCallSpecImpl(WebClient client){
+    public static Function<PrepareExternalAPICallRequest, List> prepareCallSpecImpl(WebClient client){
         return prepareCallRq -> {
             List results = new ArrayList();
 
@@ -36,7 +36,7 @@ public class ExternalServiceCallLogicImpl {
             );
 
             results.add(
-                    RunExternalAPICallRequest.builder()
+                    PrepareExternalAPICallRequest.builder()
                                             .requestBodySpec(rqSpec)
                                             .originalRequest(prepareCallRq.getOriginalRequest())
                                         .build()
@@ -75,7 +75,7 @@ public class ExternalServiceCallLogicImpl {
         return rqSpec;
     }
 
-    public static Function<RunExternalAPICallRequest, List> runExternalAPICall(
+    public static Function<PrepareExternalAPICallRequest, List> runExternalAPICall(
             BiConsumer onSuccess,
             BiConsumer onFail
     ){
@@ -91,10 +91,12 @@ public class ExternalServiceCallLogicImpl {
                             WebErrorStatusHandlers.handle3xxError(
                                     body -> handleResult(onFail)
                                             .accept(
-                                                    KeyValue.pair(
-                                                            runRequest.getOriginalRequest().getRqId(),
-                                                            runRequest.getOriginalRequest()
-                                                    ),
+                                                    ExternalCallRequestAggregate.builder()
+                                                                .requestId(
+                                                                        runRequest.getOriginalRequest().getRqId()
+                                                                )
+                                                                .requestAggregate(runRequest.getOriginalRequest())
+                                                            .build(),
                                                     body
                                             )
                             )
@@ -104,10 +106,14 @@ public class ExternalServiceCallLogicImpl {
                             WebErrorStatusHandlers.handle4xxError(
                                     body -> handleResult(onFail)
                                             .accept(
-                                                    KeyValue.pair(
-                                                            runRequest.getOriginalRequest().getRqId(),
-                                                            runRequest.getOriginalRequest()
-                                                    ),
+                                                    ExternalCallRequestAggregate.builder()
+                                                                .requestId(
+                                                                        runRequest.getOriginalRequest().getRqId()
+                                                                )
+                                                                .requestAggregate(
+                                                                        runRequest.getOriginalRequest()
+                                                                )
+                                                            .build(),
                                                     body
                                             )
                             )
@@ -117,10 +123,14 @@ public class ExternalServiceCallLogicImpl {
                             WebErrorStatusHandlers.handle5xxError(
                                     body -> handleResult(onFail)
                                             .accept(
-                                                    KeyValue.pair(
-                                                            runRequest.getOriginalRequest().getRqId(),
-                                                            runRequest.getOriginalRequest()
-                                                    ),
+                                                    ExternalCallRequestAggregate.builder()
+                                                                .requestId(
+                                                                        runRequest.getOriginalRequest().getRqId()
+                                                                )
+                                                                .requestAggregate(
+                                                                        runRequest.getOriginalRequest()
+                                                                )
+                                                            .build(),
                                                     body
                                             )
                             )
@@ -129,10 +139,14 @@ public class ExternalServiceCallLogicImpl {
                     .subscribe(
                             resultObject -> handleResult(onSuccess)
                                     .accept(
-                                            KeyValue.pair(
-                                                    runRequest.getOriginalRequest().getRqId(),
-                                                    runRequest.getOriginalRequest()
-                                            ),
+                                            ExternalCallRequestAggregate.builder()
+                                                        .requestId(
+                                                                runRequest.getOriginalRequest().getRqId()
+                                                        )
+                                                        .requestAggregate(
+                                                                runRequest.getOriginalRequest()
+                                                        )
+                                                    .build(),
                                             resultObject
                                     ),
                             error -> {
@@ -157,11 +171,11 @@ public class ExternalServiceCallLogicImpl {
 
     // aggregateKV looks like KeyValue.pair( correlId, aggregateObject )
     // so the handler will rece
-    private static BiConsumer<KeyValue, Object> handleResult(
+    private static BiConsumer<ExternalCallRequestAggregate, Object> handleResult(
             BiConsumer handler
     ){
-        return (aggregateKV, result) -> handler.accept(
-                aggregateKV.value,
+        return (aggregateObj, result) -> handler.accept(
+                aggregateObj,
                 result
         );
     }

@@ -3,6 +3,7 @@ package com.spacesoldier.rservice.implementation.config.routing;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.spacesoldier.rservice.entities.external.io.ErrorCallResponse;
+import com.spacesoldier.rservice.entities.external.io.ExternalCallRequestAggregate;
 import com.spacesoldier.rservice.entities.external.io.SuccessCallResultEnvelope;
 import com.spacesoldier.rservice.entities.io.IncomingRequestEnvelope;
 import com.spacesoldier.rservice.streaming.manage.FluxWiresManager;
@@ -37,18 +38,20 @@ public class ExternalApiResponsesRoutingConfig {
     }
 
     @Bean(name="onSuccessCatalogRsHandler")
-    public BiConsumer<KeyValue,String> onSuccessConsumer(){
+    public BiConsumer<ExternalCallRequestAggregate,String> onSuccessConsumer(){
 
         Gson gson = new GsonBuilder().create();
 
-        return (kv, userDataObj) -> {
+        return (aggr, userDataObj) -> {
 
             String userDataStr = (String) userDataObj;
 
             SuccessCallResultEnvelope okResponse = SuccessCallResultEnvelope.builder()
-                    .requestId(((IncomingRequestEnvelope) kv.value).getRqId())
-                    .payload(userDataObj)
-                    .originalRequest((IncomingRequestEnvelope) kv.value)
+                        .requestId(
+                                ((IncomingRequestEnvelope) aggr.getRequestAggregate()).getRqId()
+                        )
+                        .payload(userDataObj)
+                        .originalRequest(aggr.getRequestAggregate())
                     .build();
 
             fluxManager.getSink("serve").accept(okResponse);

@@ -1,7 +1,7 @@
 package com.spacesoldier.rservice.implementation.execution.logic.caching;
 
 import com.spacesoldier.rservice.caching.EntitiesCache;
-import com.spacesoldier.rservice.entities.internal.cache.IncomingPegasusUpdate;
+import com.spacesoldier.rservice.entities.internal.cache.IncomingUpdate;
 import com.spacesoldier.rservice.entities.internal.log.LogHelper;
 import com.spacesoldier.rservice.entities.internal.log.LogMessage;
 
@@ -11,7 +11,7 @@ public class HandleCachesUpdatesImpl {
 
     private static final String unitName = "handle-updates";
 
-    public static Function<IncomingPegasusUpdate, LogMessage> saveIncomingUpdate(EntitiesCache tikersCache){
+    public static Function<IncomingUpdate, LogMessage> saveIncomingUpdate(EntitiesCache tikersCache){
 
         String okStatusDescTemplate = "ticker %s saved to cache";
         String errorStatusDescTemplate = "could not save %s to cache";

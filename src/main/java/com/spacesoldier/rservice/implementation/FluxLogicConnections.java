@@ -40,7 +40,7 @@ public class FluxLogicConnections {
                 .subscribe();
 
         // here we call an external API (in our case - Muse endpoint to report a status)
-        fluxManager.getStream("muse_rest_call")
+        fluxManager.getStream("outbound_rest_call")
                 .flatMap(   prepareCallSpec         )
                 .flatMap(   runExternalAPICall     )
                 .subscribe();

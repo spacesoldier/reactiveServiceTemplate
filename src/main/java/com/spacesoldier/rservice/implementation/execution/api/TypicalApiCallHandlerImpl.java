@@ -20,7 +20,7 @@ public class TypicalApiCallHandlerImpl {
     @Autowired @Qualifier("FluxWiringManager")
     private FluxWiresManager fluxManager;
 
-    public Mono<String> buildPortfolio(ServerWebExchange exchange) {
+    public Mono<String> handleRequest(ServerWebExchange exchange) {
 
         // let's mark every request with its very own id
         String rqId = UUID.randomUUID().toString();

@@ -7,7 +7,7 @@ import lombok.Data;
 import org.springframework.web.reactive.function.client.WebClient;
 
 @Data @Builder
-public class RunExternalAPICallRequest {
+public class PrepareExternalAPICallRequest {
     private String callPath;
     private WebClient.RequestBodySpec requestBodySpec;
     private IncomingRequestEnvelope originalRequest;
