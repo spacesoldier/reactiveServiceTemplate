@@ -1,4 +1,4 @@
-package com.spacesoldier.rservice.implementation.execution.logic.integration;
+package com.spacesoldier.rservice.implementation.execution.logic.integration.rest;
 
 import com.spacesoldier.rservice.entities.external.io.ExternalCallRequestAggregate;
 import com.spacesoldier.rservice.entities.internal.queries.PrepareExternalAPICallRequest;

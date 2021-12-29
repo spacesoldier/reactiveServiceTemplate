@@ -9,6 +9,11 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
+import java.lang.annotation.Annotation;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Function;
+
 @Component
 public class FluxLogicConnections {
 
@@ -26,6 +31,7 @@ public class FluxLogicConnections {
 
     @Autowired @Qualifier("runExternalAPICall")
     private OneToManyValueTransformer runExternalAPICall;
+
 
     // This is the heart of our service - its main configuration which describes connections
     // between the small parts of its logic
