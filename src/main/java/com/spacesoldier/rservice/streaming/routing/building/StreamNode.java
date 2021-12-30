@@ -10,5 +10,6 @@ public class StreamNode {
     private String streamName;
     private String nodeName;
     private Class transformationInputType;
+    private Class transformationOutputType;
     private Function transformation;
 }
