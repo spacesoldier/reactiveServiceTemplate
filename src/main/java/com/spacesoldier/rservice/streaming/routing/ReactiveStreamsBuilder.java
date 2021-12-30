@@ -22,6 +22,9 @@ public class ReactiveStreamsBuilder {
     // until they used for building the reactive streams definitions
     List<StreamNode> allStreamNodes = new LinkedList<>();
 
+    // let's collect the stream names here
+    Set<String> streamNames = new HashSet<>();
+
     // here we store the lists of nodes corresponding to the names
     // of logic chains we build
     Map<String, List<StreamNode>> streams = new HashMap<>();
@@ -107,6 +110,9 @@ public class ReactiveStreamsBuilder {
         // we store our index into a list
         List<Class> nodeIndex = buildIndex(nodesOfStream);
 
+        Set<Class> nodeInputs = new HashSet<>();
+        Set<Class> nodeOutputs = new HashSet<>();
+
         // then we fill the adjacency matrix using our index
         for (StreamNode edge: nodesOfStream){
             adjacencyMatrix.get(
@@ -117,6 +123,13 @@ public class ReactiveStreamsBuilder {
                             .add(edge.getTransformationOutputType());
         }
 
+        // also let's write down the input and output types of transformations
+        // to use it for root detection
+        for (StreamNode node: nodesOfStream){
+            nodeInputs.add(node.getTransformationInputType());
+            nodeOutputs.add(node.getTransformationOutputType());
+        }
+
         // next step is detecting a root node
         // assume the root node connects as the first element in logic chain,
         // so it's the only node which input type does not match any output type
@@ -125,9 +138,19 @@ public class ReactiveStreamsBuilder {
         // which we treat as a structural error and as a result such a chain should not be built
 
         // to find out which node does not match anyone's output
-        // let's review the columns of the adjacency matrix
-        for (int i=0; i<adjacencyMatrix.size(); i++){
+        // and to do this we intersect the set of input types with the set of output types
+        Set<Class> intersection = new HashSet<>(nodeInputs);
+        intersection.retainAll(nodeOutputs);
 
+        // let's see if we found any candidates to be the root node of our graph
+        if (intersection.size() > 0){
+
+        } else {
+            // all input types are found among output types, so we have a cycled chain
+            // which will send the message to itself infinitely
+            // we should not build this chain
+
+            result = -1;
         }
 
         // we need to apply topological sorting to our stream nodes
@@ -163,8 +186,7 @@ public class ReactiveStreamsBuilder {
     }
 
     public void buildStreams(){
-        // let's collect the stream names here
-        Set<String> streamNames = new HashSet<>();
+
 
         for(StreamNode node: allStreamNodes){
             String streamName = node.getStreamName();
