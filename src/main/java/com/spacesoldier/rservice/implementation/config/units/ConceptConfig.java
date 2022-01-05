@@ -6,7 +6,7 @@ import com.spacesoldier.rservice.entities.internal.queries.concept.StepThreeRequ
 import com.spacesoldier.rservice.entities.internal.queries.concept.StepTwoRequest;
 import com.spacesoldier.rservice.implementation.execution.logic.units.ConceptUnitImpl;
 import com.spacesoldier.rservice.streaming.routing.ReactiveStreamsBuilder;
-import com.spacesoldier.rservice.streaming.routing.building.StreamNode;
+import com.spacesoldier.rservice.streaming.routing.entities.stream.StreamNode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

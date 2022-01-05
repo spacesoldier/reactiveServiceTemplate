@@ -9,4 +9,9 @@ public class AutoRouterConfig {
     public ReactiveStreamsBuilder initStreamsBuilder(){
         return new ReactiveStreamsBuilder();
     }
+
+    @Bean
+    public AppReadyListener initAppReadyListener(){
+        return new AppReadyListener();
+    }
 }

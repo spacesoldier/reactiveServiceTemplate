@@ -1,7 +1,9 @@
 package com.spacesoldier.rservice.streaming.routing;
 
 import com.spacesoldier.rservice.streaming.manage.FluxWiresManager;
-import com.spacesoldier.rservice.streaming.routing.building.StreamNode;
+import com.spacesoldier.rservice.streaming.routing.entities.stream.StreamNode;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.*;
 import java.util.function.Function;
@@ -11,6 +13,9 @@ import java.util.function.Function;
 // instead of using the autowiring too often (almost everywhere) and writing too many same looking
 // configurations and beans on one side and manually definition of the reactive logic chains on the other
 public class ReactiveStreamsBuilder {
+
+    public static final String unitName = "stream builder";
+    private static final Logger logger = LoggerFactory.getLogger("rx builder");
 
     private FluxWiresManager fluxManager;
 
@@ -149,11 +154,23 @@ public class ReactiveStreamsBuilder {
         // to find out which node does not match anyone's output
         // and to do this we intersect the set of input types with the set of output types
         Set<Class> intersection = new HashSet<>(nodeInputs);
-        intersection.retainAll(nodeOutputs);
+        intersection.removeAll(nodeOutputs);
 
         // let's see if we found any candidates to be the root node of our graph
         if (intersection.size() > 0){
+            logger.info(
+                    String.format(
+                            logMsgTemplate,
+                            unitName.toUpperCase(),
+                            String.format(
+                                    "found the root node candidates of %s stream:\n %s",
+                                    streamName,
+                                    intersection
 
+                            )
+                    )
+
+            );
         } else {
             // all input types are found among output types, so we have a cycled chain
             // which will send the message to itself infinitely
@@ -194,6 +211,8 @@ public class ReactiveStreamsBuilder {
         return nodeIndex;
     }
 
+    private static String logMsgTemplate = "[%s]: %s";
+
     public void buildStreams(){
 
 
@@ -205,6 +224,21 @@ public class ReactiveStreamsBuilder {
             addNodeToStreamDefinition(node, streamName);
             addRouteToStreamsByClass(streamName, inputType);
 
+        }
+
+        logger.info(
+                String.format(logMsgTemplate,
+                            unitName.toUpperCase(),
+                            String.format(
+                                    "built the following routing table: \n %s",
+                                    routingMap
+                            )
+                        )
+        );
+
+
+        for (String streamName: streamNames){
+            buildStream(streamName);
         }
 
     }

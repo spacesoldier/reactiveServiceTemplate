@@ -1,4 +1,4 @@
-package com.spacesoldier.rservice.streaming.routing.building;
+package com.spacesoldier.rservice.streaming.routing.entities.stream;
 
 import lombok.Builder;
 import lombok.Data;
