@@ -35,22 +35,31 @@ public class ReactiveStreamsBuilder {
     Map<Class, List<String>> routingMap = new HashMap<>();
 
     // register a transformation of the stream defined by its name
-    public int register(Class inputType, Function transformation, String streamName, String nodeName){
-      int result = 0;
+    public StreamNode register(Class inputType, Class outputType, Function transformation, String streamName, String nodeName){
+        StreamNode newNode = StreamNode.builder()
+                                            .streamName(streamName)
+                                            .nodeName(nodeName)
+                                            .transformationInputType(inputType)
+                                            .transformationOutputType(outputType)
+                                            .transformation(transformation)
+                                        .build();
 
-      allStreamNodes.add(
-              StreamNode.builder()
-                      .streamName(streamName)
-                      .nodeName(nodeName)
-                      .transformationInputType(inputType)
-                      .transformation(transformation)
-              .build()
-      );
+        allStreamNodes.add( newNode );
 
-      return result;
+        return newNode;
     };
 
-    public int register(Class inputType, Function transformation, String streamName){
+    public StreamNode register(Class inputType, Function transformation, String streamName, String nodeName){
+        return register(
+                inputType,
+                null,
+                transformation,
+                streamName,
+                nodeName
+        );
+    }
+
+    public StreamNode register(Class inputType, Function transformation, String streamName){
         String nodeName = inputType.getName();
         return register(
                 inputType,
@@ -63,7 +72,7 @@ public class ReactiveStreamsBuilder {
 
     private String streamNameTemplate = "%sStream";
 
-    public int register(Class inputType, Function transformation){
+    public StreamNode register(Class inputType, Function transformation){
         String nodeName = inputType.getName();
         return register(
                 inputType,
