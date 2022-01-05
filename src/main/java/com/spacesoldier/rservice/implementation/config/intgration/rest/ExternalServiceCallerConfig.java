@@ -1,4 +1,4 @@
-package com.spacesoldier.rservice.implementation.config.flux;
+package com.spacesoldier.rservice.implementation.config.intgration.rest;
 
 import com.spacesoldier.rservice.entities.internal.queries.PrepareExternalAPICallRequest;
 import com.spacesoldier.rservice.implementation.execution.logic.integration.rest.ExternalServiceCallLogicImpl;

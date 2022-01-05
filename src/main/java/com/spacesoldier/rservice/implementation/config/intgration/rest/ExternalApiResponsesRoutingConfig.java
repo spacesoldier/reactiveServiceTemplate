@@ -1,4 +1,4 @@
-package com.spacesoldier.rservice.implementation.config.routing;
+package com.spacesoldier.rservice.implementation.config.intgration.rest;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

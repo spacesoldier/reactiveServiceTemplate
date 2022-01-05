@@ -1,4 +1,4 @@
-package com.spacesoldier.rservice.implementation.execution.routing;
+package com.spacesoldier.rservice.streaming.routing;
 
 import com.spacesoldier.rservice.streaming.routing.entities.FluxRoutedEnvelope;
 import lombok.extern.slf4j.Slf4j;
