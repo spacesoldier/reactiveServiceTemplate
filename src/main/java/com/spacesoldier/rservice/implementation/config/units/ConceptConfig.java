@@ -28,13 +28,13 @@ public class ConceptConfig {
             {
                 add(
                         streamsBuilder.register(
-                                            StepOneRequest.class,
-                                            StepTwoRequest.class,
-                                            ConceptUnitImpl.conceptStageOne(),
-                                            "conceptStream",
-                                            "stepOne"
-                                        )
+                                StepFourRequest.class,
+                                ConceptUnitImpl.conceptStageFour(),
+                                "conceptStream",
+                                "stepFour"
+                        )
                 );
+
                 add(
                         streamsBuilder.register(
                                             StepTwoRequest.class,
@@ -44,6 +44,17 @@ public class ConceptConfig {
                                             "stepTwo"
                                         )
                 );
+
+                add(
+                        streamsBuilder.register(
+                                StepOneRequest.class,
+                                StepTwoRequest.class,
+                                ConceptUnitImpl.conceptStageOne(),
+                                "conceptStream",
+                                "stepOne"
+                        )
+                );
+
                 add(
                         streamsBuilder.register(
                                             StepThreeRequest.class,
@@ -53,14 +64,7 @@ public class ConceptConfig {
                                             "stepThree"
                                         )
                 );
-                add(
-                        streamsBuilder.register(
-                                            StepFourRequest.class,
-                                            ConceptUnitImpl.conceptStageFour(),
-                                            "conceptStream",
-                                            "stepFour"
-                                        )
-                );
+
             }
         };
 

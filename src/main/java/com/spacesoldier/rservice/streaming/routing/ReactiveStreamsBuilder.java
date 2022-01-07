@@ -129,19 +129,57 @@ public class ReactiveStreamsBuilder {
 
         // then we fill the adjacency matrix using our index
         for (StreamNode edge: nodesOfStream){
-            adjacencyMatrix.get(
-                                    nodeIndex.indexOf(
-                                                        edge.getTransformationInputType()
-                                                    )
-                                )
-                            .add(edge.getTransformationOutputType());
+            Class edgeDest = edge.getTransformationOutputType();
+            if (edgeDest != null){
+                int inputIndex = nodeIndex.indexOf(
+                                                    edge.getTransformationInputType()
+                                            );
+                int outputIndex = nodeIndex.indexOf(
+                                                        edge.getTransformationOutputType()
+                                                    );
+                adjacencyMatrix.get(inputIndex).set(
+                                                        outputIndex,
+                                                        edge.getTransformationOutputType()
+                                                    );
+            }
         }
+
+        StringBuilder adjMatrixView = prepareAdjMatrixView(adjacencyMatrix, nodeIndex);
+
+        logger.info(String.format(
+                "[%s]: adjacency matrix for stream %s\n%s",
+                unitName.toUpperCase(),
+                streamName,
+                adjMatrixView
+        ));
 
         // also let's write down the input and output types of transformations
         // to use it for root detection
         for (StreamNode node: nodesOfStream){
-            nodeInputs.add(node.getTransformationInputType());
-            nodeOutputs.add(node.getTransformationOutputType());
+            if (node.getTransformationInputType() != null){
+                nodeInputs.add(node.getTransformationInputType());
+            }
+            if (node.getTransformationOutputType() != null){
+                nodeOutputs.add(node.getTransformationOutputType());
+            }
+        }
+
+        // then let's make a couple indexes
+
+        Map<Class, StreamNode> indexNodesByInputType = new HashMap<>();
+        Map<Class, StreamNode> indexNodesByOutputType = new HashMap<>();
+
+        // fill our indexes with stream nodes
+        // as a result we are able to retrieve the node by its input or output type
+        for (StreamNode node: nodesOfStream){
+
+            if (node.getTransformationInputType() != null){
+                indexNodesByInputType.put(node.getTransformationInputType(),node);
+            }
+
+            if (node.getTransformationOutputType() != null){
+                indexNodesByOutputType.put(node.getTransformationOutputType(), node);
+            }
         }
 
         // next step is detecting a root node
@@ -169,8 +207,58 @@ public class ReactiveStreamsBuilder {
 
                             )
                     )
-
             );
+            logger.info("building the logic chain");
+
+            // then we perform a breadth-first traverse of the stream nodes graph
+            List<Class> rootCandidates = new ArrayList(intersection);
+            // here we put the stream nodes in the proper order
+            List<StreamNode> logicChainDef = new ArrayList<>();
+
+            List<Class> visitedVertices = new ArrayList<>();
+            LinkedList<Class> tmpQueue = new LinkedList<>();
+
+            visitedVertices.add(rootCandidates.get(0));
+            tmpQueue.add(rootCandidates.get(0));
+
+            while (tmpQueue.size() != 0){
+                Class currentNode = tmpQueue.poll();
+                int matrixRowNumber = nodeIndex.indexOf(currentNode);
+                ListIterator<Class> iterator = adjacencyMatrix.get(matrixRowNumber).listIterator();
+                while (iterator.hasNext()){
+                    Class vertex = iterator.next();
+                    if (vertex != null){
+                        if (!visitedVertices.contains(vertex)){
+                            visitedVertices.add(vertex);
+                            tmpQueue.add(vertex);
+                        }
+                    }
+                }
+            }
+
+
+            StringBuilder verticesList = new StringBuilder();
+            for (Class vertice: visitedVertices){
+                verticesList.append(String.format("%s\n",vertice.getSimpleName()));
+            }
+            logger.info(
+                    String.format(
+                            "[%s]: inputs in order\n%s",
+                            unitName.toUpperCase(),
+                            verticesList
+                    )
+            );
+
+            // fill logic chain definition with stream nodes
+            // using visited vertices list as a source of order
+            // and the inputs index as a way to retrieve proper stream node
+            for (Class vertice: visitedVertices){
+                StreamNode properNode = indexNodesByInputType.get(vertice);
+                logicChainDef.add(properNode);
+            }
+
+            result = 0;
+
         } else {
             // all input types are found among output types, so we have a cycled chain
             // which will send the message to itself infinitely
@@ -186,6 +274,31 @@ public class ReactiveStreamsBuilder {
         return result;
     }
 
+    private StringBuilder prepareAdjMatrixView(List<List<Class>> adjacencyMatrix, List<Class> nodeIndex) {
+        StringBuilder adjMatrixView = new StringBuilder();
+        List<Class> inputsColumn = new ArrayList<>(nodeIndex);
+        for (int row = 0; row < adjacencyMatrix.size(); row++){
+            for (int col = 0; col < adjacencyMatrix.size(); col++){
+                if (col == 0){
+                    Class inputClass = inputsColumn.get(row);
+                    adjMatrixView.append(
+                            String.format("%s\t", inputClass.getSimpleName())
+                    );
+                }
+                Class cellValue = adjacencyMatrix.get(row).get(col);
+                String cellValueStr = cellValue == null ?
+                                        "---------->"               :
+                                        cellValue.getSimpleName()   ;
+                String cellView = String.format("%s\t", cellValueStr);
+                adjMatrixView.append(cellView);
+                if (col == adjacencyMatrix.size() - 1){
+                    adjMatrixView.append("\n");
+                }
+            }
+        }
+        return adjMatrixView;
+    }
+
     private List<Class> buildIndex(List<StreamNode> nodesOfStream) {
         List<Class> nodeIndex = new ArrayList<>();
         for (StreamNode transformer: nodesOfStream){
@@ -195,17 +308,16 @@ public class ReactiveStreamsBuilder {
             Class src = transformer.getTransformationInputType();
             Class dest = transformer.getTransformationOutputType();
 
-            // when we did not define the output type, let's say it is an Object
-            if (dest == null){
-                dest = Object.class;
-            }
-
-            // then we add the types into our index
-            if (!nodeIndex.contains(src)){
-                nodeIndex.add(src);
-            }
-            if (!nodeIndex.contains(dest)){
-                nodeIndex.add(dest);
+            // when we did not define the output type,
+            // we cannot put anything into the index
+            if (dest != null) {
+                // then we add the types into our index
+                if (!nodeIndex.contains(src)) {
+                    nodeIndex.add(src);
+                }
+                if (!nodeIndex.contains(dest)) {
+                    nodeIndex.add(dest);
+                }
             }
         }
         return nodeIndex;
