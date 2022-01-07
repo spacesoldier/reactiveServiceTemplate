@@ -2,8 +2,10 @@ package com.spacesoldier.rservice.streaming.routing;
 
 import com.spacesoldier.rservice.streaming.manage.FluxWiresManager;
 import com.spacesoldier.rservice.streaming.routing.entities.stream.StreamNode;
+import com.spacesoldier.rservice.streaming.transformers.flux.OneToManyValueTransformer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import reactor.core.publisher.Flux;
 
 import java.util.*;
 import java.util.function.Function;
@@ -212,50 +214,14 @@ public class ReactiveStreamsBuilder {
 
             // then we perform a breadth-first traverse of the stream nodes graph
             List<Class> rootCandidates = new ArrayList(intersection);
-            // here we put the stream nodes in the proper order
-            List<StreamNode> logicChainDef = new ArrayList<>();
+            List<StreamNode> logicChainDef = buildLogicChain(
+                                                                adjacencyMatrix,
+                                                                nodeIndex,
+                                                                indexNodesByInputType,
+                                                                rootCandidates
+                                                            );
 
-            List<Class> visitedVertices = new ArrayList<>();
-            LinkedList<Class> tmpQueue = new LinkedList<>();
-
-            visitedVertices.add(rootCandidates.get(0));
-            tmpQueue.add(rootCandidates.get(0));
-
-            while (tmpQueue.size() != 0){
-                Class currentNode = tmpQueue.poll();
-                int matrixRowNumber = nodeIndex.indexOf(currentNode);
-                ListIterator<Class> iterator = adjacencyMatrix.get(matrixRowNumber).listIterator();
-                while (iterator.hasNext()){
-                    Class vertex = iterator.next();
-                    if (vertex != null){
-                        if (!visitedVertices.contains(vertex)){
-                            visitedVertices.add(vertex);
-                            tmpQueue.add(vertex);
-                        }
-                    }
-                }
-            }
-
-
-            StringBuilder verticesList = new StringBuilder();
-            for (Class vertice: visitedVertices){
-                verticesList.append(String.format("%s\n",vertice.getSimpleName()));
-            }
-            logger.info(
-                    String.format(
-                            "[%s]: inputs in order\n%s",
-                            unitName.toUpperCase(),
-                            verticesList
-                    )
-            );
-
-            // fill logic chain definition with stream nodes
-            // using visited vertices list as a source of order
-            // and the inputs index as a way to retrieve proper stream node
-            for (Class vertice: visitedVertices){
-                StreamNode properNode = indexNodesByInputType.get(vertice);
-                logicChainDef.add(properNode);
-            }
+            assembleReactiveChain(streamName, logicChainDef);
 
             result = 0;
 
@@ -272,6 +238,74 @@ public class ReactiveStreamsBuilder {
         // according to their input data types
 
         return result;
+    }
+
+    private void assembleReactiveChain(String streamName, List<StreamNode> logicChainDef) {
+        Flux currentStream = fluxManager.getStream(streamName);
+
+        for (StreamNode mapping: logicChainDef){
+            // build a one-to-many transformer and apply it to the current flux
+
+            OneToManyValueTransformer newMapper = new OneToManyValueTransformer(
+                    mapping.getNodeName(),
+                    new HashMap<>(){
+                        {
+                            put(mapping.getTransformationInputType(),mapping.getTransformation());
+                        }
+                    }
+            );
+
+            currentStream = currentStream.flatMap(newMapper);
+        }
+
+        currentStream.subscribe();
+    }
+
+    private List<StreamNode> buildLogicChain(List<List<Class>> adjacencyMatrix, List<Class> nodeIndex, Map<Class, StreamNode> indexNodesByInputType, List<Class> rootCandidates) {
+        // here we put the stream nodes in the proper order
+        List<StreamNode> logicChainDef = new ArrayList<>();
+
+        List<Class> visitedVertices = new ArrayList<>();
+        LinkedList<Class> tmpQueue = new LinkedList<>();
+
+        visitedVertices.add(rootCandidates.get(0));
+        tmpQueue.add(rootCandidates.get(0));
+
+        while (tmpQueue.size() != 0){
+            Class currentNode = tmpQueue.poll();
+            int matrixRowNumber = nodeIndex.indexOf(currentNode);
+            ListIterator<Class> iterator = adjacencyMatrix.get(matrixRowNumber).listIterator();
+            while (iterator.hasNext()){
+                Class vertex = iterator.next();
+                if (vertex != null){
+                    if (!visitedVertices.contains(vertex)){
+                        visitedVertices.add(vertex);
+                        tmpQueue.add(vertex);
+                    }
+                }
+            }
+        }
+
+        StringBuilder verticesList = new StringBuilder();
+        for (Class vertice: visitedVertices){
+            verticesList.append(String.format("%s\n",vertice.getSimpleName()));
+        }
+        logger.info(
+                String.format(
+                        "[%s]: inputs in order\n%s",
+                        unitName.toUpperCase(),
+                        verticesList
+                )
+        );
+
+        // fill logic chain definition with stream nodes
+        // using visited vertices list as a source of order
+        // and the inputs index as a way to retrieve proper stream node
+        for (Class vertice: visitedVertices){
+            StreamNode properNode = indexNodesByInputType.get(vertice);
+            logicChainDef.add(properNode);
+        }
+        return logicChainDef;
     }
 
     private StringBuilder prepareAdjMatrixView(List<List<Class>> adjacencyMatrix, List<Class> nodeIndex) {
