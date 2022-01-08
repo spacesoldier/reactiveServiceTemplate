@@ -51,13 +51,6 @@ public class FluxLogicConnections {
                 .flatMap(   runExternalAPICall     )
                 .subscribe();
 
-        //
-        fluxManager.getStream("cj_management"     )
-//                .flatMap    (                      )
-//                .flatMap    (                 )
-                .map        (   routeToFluxByName               )
-                .subscribe();
-
 
     }
 

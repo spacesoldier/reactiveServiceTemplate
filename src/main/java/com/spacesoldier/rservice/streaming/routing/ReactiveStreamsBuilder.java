@@ -105,7 +105,10 @@ public class ReactiveStreamsBuilder {
         while (nodesIterator.hasNext()){
             StreamNode node = nodesIterator.next();
             if (node.getStreamName().equals(streamName)){
-                nodesOfStream.add(node);
+                if (!nodesOfStream.contains(node)){
+                    nodesOfStream.add(node);
+                }
+
                 nodesIterator.remove();
             }
         }
