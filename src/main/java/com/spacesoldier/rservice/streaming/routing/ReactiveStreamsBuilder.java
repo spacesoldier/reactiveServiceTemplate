@@ -21,8 +21,8 @@ public class ReactiveStreamsBuilder {
 
     private FluxWiresManager fluxManager;
 
-    public ReactiveStreamsBuilder(){
-        fluxManager = new FluxWiresManager();
+    public ReactiveStreamsBuilder(FluxWiresManager manager){
+        fluxManager = manager;
     }
 
     // here we store the building blocks of inner structure
