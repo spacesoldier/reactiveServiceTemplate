@@ -41,6 +41,12 @@ public class ReactiveStreamsBuilder {
     // where a subscriber consumes the objects of this type
     Map<Class, List<String>> routingMap = new HashMap<>();
 
+    // register a transformation node provided by user
+    public StreamNode register(StreamNode newNode){
+        allStreamNodes.add(newNode);
+        return newNode;
+    }
+
     // register a transformation of the stream defined by its name
     public StreamNode register(Class inputType, Class outputType, Function transformation, String streamName, String nodeName){
         StreamNode newNode = StreamNode.builder()

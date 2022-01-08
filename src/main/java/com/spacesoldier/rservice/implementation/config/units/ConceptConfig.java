@@ -5,70 +5,56 @@ import com.spacesoldier.rservice.entities.internal.queries.concept.StepOneReques
 import com.spacesoldier.rservice.entities.internal.queries.concept.StepThreeRequest;
 import com.spacesoldier.rservice.entities.internal.queries.concept.StepTwoRequest;
 import com.spacesoldier.rservice.implementation.execution.logic.units.ConceptUnitImpl;
-import com.spacesoldier.rservice.streaming.routing.ReactiveStreamsBuilder;
 import com.spacesoldier.rservice.streaming.routing.entities.stream.StreamNode;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Component;
-
-import java.util.ArrayList;
-import java.util.List;
+import org.springframework.context.annotation.Configuration;
 
 @Slf4j
-@Component
+@Configuration
 public class ConceptConfig {
 
-    @Autowired
-    private ReactiveStreamsBuilder streamsBuilder;
+    @Bean
+    public StreamNode stepOne(){
+        return StreamNode.builder()
+                            .streamName("conceptStream")
+                            .nodeName("stepOne")
+                            .transformationInputType(StepOneRequest.class)
+                            .transformationOutputType(StepTwoRequest.class)
+                            .transformation(ConceptUnitImpl.conceptStageOne())
+                        .build();
+    }
 
     @Bean
-    public List<StreamNode> registerConceptNodes(){
-        List<StreamNode> nodes = new ArrayList<>(){
-            {
-                add(
-                        streamsBuilder.register(
-                                StepFourRequest.class,
-                                ConceptUnitImpl.conceptStageFour(),
-                                "conceptStream",
-                                "stepFour"
-                        )
-                );
-
-                add(
-                        streamsBuilder.register(
-                                            StepTwoRequest.class,
-                                            StepThreeRequest.class,
-                                            ConceptUnitImpl.conceptStageTwo(),
-                                            "conceptStream",
-                                            "stepTwo"
-                                        )
-                );
-
-                add(
-                        streamsBuilder.register(
-                                StepOneRequest.class,
-                                StepTwoRequest.class,
-                                ConceptUnitImpl.conceptStageOne(),
-                                "conceptStream",
-                                "stepOne"
-                        )
-                );
-
-                add(
-                        streamsBuilder.register(
-                                            StepThreeRequest.class,
-                                            StepFourRequest.class,
-                                            ConceptUnitImpl.conceptStageThree(),
-                                            "conceptStream",
-                                            "stepThree"
-                                        )
-                );
-
-            }
-        };
-
-
-        return nodes;
+    public StreamNode stepTwo(){
+        return StreamNode.builder()
+                            .streamName("conceptStream")
+                            .nodeName("stepTwo")
+                            .transformationInputType(StepTwoRequest.class)
+                            .transformationOutputType(StepThreeRequest.class)
+                            .transformation(ConceptUnitImpl.conceptStageTwo())
+                        .build();
     }
+
+    @Bean
+    public StreamNode stepThree(){
+        return StreamNode.builder()
+                                .streamName("conceptStream")
+                                .nodeName("stepThree")
+                                .transformationInputType(StepThreeRequest.class)
+                                .transformationOutputType(StepFourRequest.class)
+                                .transformation(ConceptUnitImpl.conceptStageThree())
+                            .build();
+    }
+
+    @Bean
+    public StreamNode stepFour(){
+        return StreamNode.builder()
+                                .streamName("conceptStream")
+                                .nodeName("stepThree")
+                                .transformationInputType(StepFourRequest.class)
+                                .transformation(ConceptUnitImpl.conceptStageFour())
+                            .build();
+    }
+
 }
