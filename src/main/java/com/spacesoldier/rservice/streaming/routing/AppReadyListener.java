@@ -4,11 +4,7 @@ import com.spacesoldier.rservice.streaming.routing.entities.stream.StreamNode;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.core.GenericTypeResolver;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.GenericArrayType;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
@@ -24,7 +20,9 @@ public class AppReadyListener implements ApplicationListener<ApplicationReadyEve
         // as a result we get the map of bean names as keys and stream nodes as values
         findStreamNodesInAppContext(context, rxStreamBuilder);
 
-
+        // check all beans of type List,
+        // let's treat a list of StreamNode as a stream definition
+        // where all the stream nodes will be connected in one chain
         findListsOfStreamNodesInAppContext(context, rxStreamBuilder);
 
 
@@ -77,9 +75,15 @@ public class AppReadyListener implements ApplicationListener<ApplicationReadyEve
             // then we register all nodes from the list
             // using the bean name as a stream name
             for (StreamNode node: streamNodes){
-                if (node.getStreamName() == null || node.getStreamName().isEmpty()){
-                    node.setStreamName(entry.getKey());
-                }
+                // set the same stream name for every node
+                node.setStreamName(entry.getKey());
+
+                // we also could leave the stream node's stream name untouched,
+                // but it can potentially cause conflicts with other stream definitions from the project
+                // if (node.getStreamName() == null || node.getStreamName().isEmpty()){
+                //    node.setStreamName(entry.getKey());
+                // }
+
                 rxStreamBuilder.register(node);
             }
 
