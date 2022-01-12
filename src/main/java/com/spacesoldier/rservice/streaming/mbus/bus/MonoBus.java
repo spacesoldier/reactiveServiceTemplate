@@ -1,4 +1,4 @@
-package com.spacesoldier.rservice.streaming.mbus.manage;
+package com.spacesoldier.rservice.streaming.mbus.bus;
 
 import com.spacesoldier.rservice.streaming.mbus.adapters.MonoWire;
 import org.slf4j.Logger;
@@ -11,7 +11,7 @@ import java.util.function.Consumer;
 
 // some sort of a dynamic storage for wires
 // which could be used for connecting the reactive requests with responses
-public class MonoWiresManager {
+public class MonoBus {
     private Map<String, MonoWire> requestWires = new HashMap<>();
 
     private final String unitName = "mono wiring manager";

@@ -1,7 +1,8 @@
 package com.spacesoldier.rservice.streaming.mbus.builder;
 
-import com.spacesoldier.rservice.streaming.mbus.manage.FluxWiresManager;
+import com.spacesoldier.rservice.streaming.mbus.bus.FluxBus;
 import com.spacesoldier.rservice.streaming.entities.stream.StreamNode;
+import com.spacesoldier.rservice.streaming.mbus.router.MessageRouter;
 import com.spacesoldier.rservice.streaming.mbus.transformers.OneToManyValueTransformer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,10 +20,12 @@ public class ReactiveStreamsBuilder {
     public static final String unitName = "stream builder";
     private static final Logger logger = LoggerFactory.getLogger("rx builder");
 
-    private FluxWiresManager fluxManager;
+    private FluxBus fluxManager;
+    private MessageRouter router;
 
-    public ReactiveStreamsBuilder(FluxWiresManager manager){
+    public ReactiveStreamsBuilder(FluxBus manager, MessageRouter msgRouter){
         fluxManager = manager;
+        router = msgRouter;
     }
 
     // here we store the building blocks of inner structure
@@ -36,10 +39,6 @@ public class ReactiveStreamsBuilder {
     // of logic chains we build
     Map<String, List<StreamNode>> streams = new HashMap<>();
 
-    // this is the main routing table
-    // which allow to match the object class to the stream name
-    // where a subscriber consumes the objects of this type
-    Map<Class, List<String>> routingMap = new HashMap<>();
 
     // register a transformation node provided by user
     public StreamNode register(StreamNode newNode){
@@ -267,7 +266,9 @@ public class ReactiveStreamsBuilder {
             currentStream = currentStream.flatMap(newMapper);
         }
 
-        currentStream.subscribe();
+        currentStream.subscribe(
+                router.routeMessages()
+        );
     }
 
     private List<StreamNode> buildLogicChain(List<List<Class>> adjacencyMatrix, List<Class> nodeIndex, Map<Class, StreamNode> indexNodesByInputType, List<Class> rootCandidates) {
@@ -377,20 +378,11 @@ public class ReactiveStreamsBuilder {
 
             streamNames.add(streamName);
             addNodeToStreamDefinition(node, streamName);
-            addRouteToStreamsByClass(streamName, inputType);
+            router.addRouteToStreamsByClass(streamName, inputType);
 
         }
 
-        logger.info(
-                String.format(logMsgTemplate,
-                            unitName.toUpperCase(),
-                            String.format(
-                                    "built the following routing table: \n %s",
-                                    routingMap
-                            )
-                        )
-        );
-
+        router.showRoutingTable();
 
         for (String streamName: streamNames){
             buildStream(streamName);
@@ -407,17 +399,7 @@ public class ReactiveStreamsBuilder {
         streams.get(streamName).add(node);
     }
 
-    private void addRouteToStreamsByClass(String streamName, Class inputType) {
-        if (!routingMap.containsKey(inputType)){
-            routingMap.put(inputType,new ArrayList<>());
-        }
 
-        // to prevent duplication let's check if we already map the given input type
-        // into the stream with given streamName
-        if (!routingMap.get(inputType).contains(streamName)){
-            routingMap.get(inputType).add(streamName);
-        }
-    }
 
 
 }

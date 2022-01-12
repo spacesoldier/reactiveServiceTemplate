@@ -1,6 +1,6 @@
 package com.spacesoldier.rservice.streaming.config;
 
-import com.spacesoldier.rservice.streaming.mbus.manage.FluxWiresManager;
+import com.spacesoldier.rservice.streaming.mbus.bus.FluxBus;
 import com.spacesoldier.rservice.streaming.entities.FluxRoutedEnvelope;
 import com.spacesoldier.rservice.streaming.mbus.transformers.OneToOneValueTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +16,7 @@ import java.util.function.Function;
 public class FluxChainsRoutingConfig {
 
     @Autowired @Qualifier("FluxWiringManager")
-    private FluxWiresManager fluxManager;
+    private FluxBus fluxManager;
 
     @Bean(name = "routeToFluxByName")
     public OneToOneValueTransformer routeToFluxByName(){

@@ -1,4 +1,4 @@
-package com.spacesoldier.rservice.streaming.mbus.manage;
+package com.spacesoldier.rservice.streaming.mbus.bus;
 
 import com.spacesoldier.rservice.streaming.mbus.adapters.FluxWire;
 import org.slf4j.Logger;
@@ -12,7 +12,7 @@ import java.util.function.Consumer;
 // some sort of a dynamic storage for wires
 // which could be used for connecting the reactive streams
 // with a number of subscribers
-public class FluxWiresManager {
+public class FluxBus {
     private Map<String, FluxWire> requestStreams = new HashMap<>();
 
     private final String unitName = "flux manager";
