@@ -1,18 +1,13 @@
 package com.spacesoldier.rservice.implementation;
 
 
-import com.spacesoldier.rservice.streaming.manage.FluxWiresManager;
-import com.spacesoldier.rservice.streaming.transformers.flux.OneToManyValueTransformer;
-import com.spacesoldier.rservice.streaming.transformers.flux.OneToOneValueTransformer;
+import com.spacesoldier.rservice.streaming.mbus.manage.FluxWiresManager;
+import com.spacesoldier.rservice.streaming.mbus.transformers.OneToManyValueTransformer;
+import com.spacesoldier.rservice.streaming.mbus.transformers.OneToOneValueTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
-
-import java.lang.annotation.Annotation;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.Function;
 
 @Component
 public class FluxLogicConnections {

@@ -2,7 +2,7 @@ package com.spacesoldier.rservice.implementation.config.intgration.rest;
 
 import com.spacesoldier.rservice.entities.internal.queries.PrepareExternalAPICallRequest;
 import com.spacesoldier.rservice.implementation.execution.logic.integration.rest.ExternalServiceCallLogicImpl;
-import com.spacesoldier.rservice.streaming.transformers.flux.OneToManyValueTransformer;
+import com.spacesoldier.rservice.streaming.mbus.transformers.OneToManyValueTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;

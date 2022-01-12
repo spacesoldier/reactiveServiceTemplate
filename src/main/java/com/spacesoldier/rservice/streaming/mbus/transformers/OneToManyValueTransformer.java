@@ -1,4 +1,4 @@
-package com.spacesoldier.rservice.streaming.transformers.flux;
+package com.spacesoldier.rservice.streaming.mbus.transformers;
 
 import reactor.core.publisher.Flux;
 

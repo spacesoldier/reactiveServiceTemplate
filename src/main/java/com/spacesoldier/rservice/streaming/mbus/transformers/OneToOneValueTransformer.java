@@ -1,4 +1,4 @@
-package com.spacesoldier.rservice.streaming.transformers.flux;
+package com.spacesoldier.rservice.streaming.mbus.transformers;
 
 import java.util.Map;
 import java.util.function.Function;

@@ -1,6 +1,6 @@
-package com.spacesoldier.rservice.streaming.routing;
+package com.spacesoldier.rservice.streaming.config;
 
-import com.spacesoldier.rservice.streaming.routing.entities.FluxRoutedEnvelope;
+import com.spacesoldier.rservice.streaming.entities.FluxRoutedEnvelope;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.function.Function;

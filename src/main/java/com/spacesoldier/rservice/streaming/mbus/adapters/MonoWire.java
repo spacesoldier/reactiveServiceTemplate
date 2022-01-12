@@ -1,4 +1,4 @@
-package com.spacesoldier.rservice.streaming.adapters;
+package com.spacesoldier.rservice.streaming.mbus.adapters;
 
 import lombok.Getter;
 import org.slf4j.Logger;

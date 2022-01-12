@@ -1,8 +1,8 @@
-package com.spacesoldier.rservice.streaming.routing;
+package com.spacesoldier.rservice.streaming.config;
 
-import com.spacesoldier.rservice.streaming.manage.FluxWiresManager;
-import com.spacesoldier.rservice.streaming.routing.entities.FluxRoutedEnvelope;
-import com.spacesoldier.rservice.streaming.transformers.flux.OneToOneValueTransformer;
+import com.spacesoldier.rservice.streaming.mbus.manage.FluxWiresManager;
+import com.spacesoldier.rservice.streaming.entities.FluxRoutedEnvelope;
+import com.spacesoldier.rservice.streaming.mbus.transformers.OneToOneValueTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;

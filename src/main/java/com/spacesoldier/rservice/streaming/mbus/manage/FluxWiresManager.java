@@ -1,6 +1,6 @@
-package com.spacesoldier.rservice.streaming.manage;
+package com.spacesoldier.rservice.streaming.mbus.manage;
 
-import com.spacesoldier.rservice.streaming.adapters.FluxWire;
+import com.spacesoldier.rservice.streaming.mbus.adapters.FluxWire;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;

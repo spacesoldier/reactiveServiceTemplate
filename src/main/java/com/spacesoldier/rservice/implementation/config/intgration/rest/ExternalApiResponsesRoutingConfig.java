@@ -6,7 +6,7 @@ import com.spacesoldier.rservice.entities.external.io.ErrorCallResponse;
 import com.spacesoldier.rservice.entities.external.io.ExternalCallRequestAggregate;
 import com.spacesoldier.rservice.entities.external.io.SuccessCallResultEnvelope;
 import com.spacesoldier.rservice.entities.io.IncomingRequestEnvelope;
-import com.spacesoldier.rservice.streaming.manage.FluxWiresManager;
+import com.spacesoldier.rservice.streaming.mbus.manage.FluxWiresManager;
 import org.apache.kafka.streams.KeyValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;

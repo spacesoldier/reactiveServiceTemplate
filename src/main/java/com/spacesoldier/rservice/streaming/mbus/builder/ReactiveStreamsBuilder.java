@@ -1,8 +1,8 @@
-package com.spacesoldier.rservice.streaming.routing;
+package com.spacesoldier.rservice.streaming.mbus.builder;
 
-import com.spacesoldier.rservice.streaming.manage.FluxWiresManager;
-import com.spacesoldier.rservice.streaming.routing.entities.stream.StreamNode;
-import com.spacesoldier.rservice.streaming.transformers.flux.OneToManyValueTransformer;
+import com.spacesoldier.rservice.streaming.mbus.manage.FluxWiresManager;
+import com.spacesoldier.rservice.streaming.entities.stream.StreamNode;
+import com.spacesoldier.rservice.streaming.mbus.transformers.OneToManyValueTransformer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;

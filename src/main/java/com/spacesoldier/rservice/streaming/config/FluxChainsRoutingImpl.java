@@ -1,7 +1,7 @@
-package com.spacesoldier.rservice.streaming.routing;
+package com.spacesoldier.rservice.streaming.config;
 
-import com.spacesoldier.rservice.streaming.manage.FluxWiresManager;
-import com.spacesoldier.rservice.streaming.routing.entities.FluxRoutedEnvelope;
+import com.spacesoldier.rservice.streaming.mbus.manage.FluxWiresManager;
+import com.spacesoldier.rservice.streaming.entities.FluxRoutedEnvelope;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

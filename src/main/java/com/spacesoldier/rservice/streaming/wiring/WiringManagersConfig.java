@@ -1,7 +1,7 @@
-package com.spacesoldier.rservice.wiring;
+package com.spacesoldier.rservice.streaming.wiring;
 
-import com.spacesoldier.rservice.streaming.manage.FluxWiresManager;
-import com.spacesoldier.rservice.streaming.manage.MonoWiresManager;
+import com.spacesoldier.rservice.streaming.mbus.manage.FluxWiresManager;
+import com.spacesoldier.rservice.streaming.mbus.manage.MonoWiresManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 

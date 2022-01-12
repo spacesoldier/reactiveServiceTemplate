@@ -1,6 +1,7 @@
-package com.spacesoldier.rservice.streaming.routing;
+package com.spacesoldier.rservice.streaming.config;
 
-import com.spacesoldier.rservice.streaming.routing.entities.stream.StreamNode;
+import com.spacesoldier.rservice.streaming.entities.stream.StreamNode;
+import com.spacesoldier.rservice.streaming.mbus.builder.ReactiveStreamsBuilder;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.ConfigurableApplicationContext;

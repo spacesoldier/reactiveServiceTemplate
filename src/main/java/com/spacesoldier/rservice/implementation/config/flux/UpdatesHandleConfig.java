@@ -3,7 +3,7 @@ package com.spacesoldier.rservice.implementation.config.flux;
 import com.spacesoldier.rservice.caching.EntitiesCache;
 import com.spacesoldier.rservice.entities.internal.cache.IncomingUpdate;
 import com.spacesoldier.rservice.implementation.execution.logic.caching.HandleCachesUpdatesImpl;
-import com.spacesoldier.rservice.streaming.transformers.flux.OneToOneValueTransformer;
+import com.spacesoldier.rservice.streaming.mbus.transformers.OneToOneValueTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
