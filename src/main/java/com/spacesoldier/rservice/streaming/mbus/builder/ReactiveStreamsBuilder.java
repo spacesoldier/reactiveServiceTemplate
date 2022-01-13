@@ -1,6 +1,6 @@
 package com.spacesoldier.rservice.streaming.mbus.builder;
 
-import com.spacesoldier.rservice.streaming.mbus.bus.FluxBus;
+import com.spacesoldier.rservice.streaming.mbus.providers.FluxProvider;
 import com.spacesoldier.rservice.streaming.entities.stream.StreamNode;
 import com.spacesoldier.rservice.streaming.mbus.router.MessageRouter;
 import com.spacesoldier.rservice.streaming.mbus.transformers.OneToManyValueTransformer;
@@ -20,10 +20,10 @@ public class ReactiveStreamsBuilder {
     public static final String unitName = "stream builder";
     private static final Logger logger = LoggerFactory.getLogger("rx builder");
 
-    private FluxBus fluxManager;
+    private FluxProvider fluxManager;
     private MessageRouter router;
 
-    public ReactiveStreamsBuilder(FluxBus manager, MessageRouter msgRouter){
+    public ReactiveStreamsBuilder(FluxProvider manager, MessageRouter msgRouter){
         fluxManager = manager;
         router = msgRouter;
     }

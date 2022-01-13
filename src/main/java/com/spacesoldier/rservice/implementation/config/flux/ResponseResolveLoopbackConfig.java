@@ -2,7 +2,7 @@ package com.spacesoldier.rservice.implementation.config.flux;
 
 import com.spacesoldier.rservice.entities.internal.queries.CommonAPIResponse;
 import com.spacesoldier.rservice.implementation.execution.logic.AggregateResponseImpl;
-import com.spacesoldier.rservice.streaming.mbus.bus.MonoBus;
+import com.spacesoldier.rservice.streaming.mbus.providers.MonoProvider;
 import com.spacesoldier.rservice.streaming.mbus.transformers.OneToOneValueTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -17,7 +17,7 @@ import java.util.function.Function;
 public class ResponseResolveLoopbackConfig {
 
     @Autowired @Qualifier("MonoWiringManager")
-    private MonoBus monoManager;
+    private MonoProvider monoManager;
 
     @Bean(name = "sendResponseBodyToOutputResponse")
     public OneToOneValueTransformer sendResponseBodyToOutput(){

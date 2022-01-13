@@ -1,7 +1,6 @@
 package com.spacesoldier.rservice.streaming.mbus.router;
 
-import com.spacesoldier.rservice.streaming.entities.FluxRoutedEnvelope;
-import com.spacesoldier.rservice.streaming.mbus.bus.FluxBus;
+import com.spacesoldier.rservice.streaming.mbus.providers.FluxProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,10 +21,10 @@ public class MessageRouter {
     private Map<Class, List<String>> routingTable = new HashMap<>();
 
     // by default all the messages are routed among the streams of the flux bus
-    private FluxBus fluxBus;
+    private FluxProvider fluxProvider;
 
-    public MessageRouter(FluxBus fluxBusInstance){
-        fluxBus = fluxBusInstance;
+    public MessageRouter(FluxProvider fluxProviderInstance){
+        fluxProvider = fluxProviderInstance;
     }
 
     public void addRouteToStreamsByClass(String streamName, Class inputType) {
@@ -63,7 +62,7 @@ public class MessageRouter {
                 List<String> streamsToSend = routingTable.get(messageObjectType);
                 for (String streamName: streamsToSend){
                     // put a message into the dedicated consumer
-                    fluxBus.getSink(streamName).accept(message);
+                    fluxProvider.getSink(streamName).accept(message);
                 }
             }
         };

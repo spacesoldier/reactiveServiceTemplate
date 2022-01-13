@@ -1,7 +1,7 @@
 package com.spacesoldier.rservice.implementation;
 
 
-import com.spacesoldier.rservice.streaming.mbus.bus.FluxBus;
+import com.spacesoldier.rservice.streaming.mbus.providers.FluxProvider;
 import com.spacesoldier.rservice.streaming.mbus.transformers.OneToManyValueTransformer;
 import com.spacesoldier.rservice.streaming.mbus.transformers.OneToOneValueTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 public class FluxLogicConnections {
 
     @Autowired @Qualifier("FluxWiringManager")
-    private FluxBus fluxManager;
+    private FluxProvider fluxManager;
 
     @Autowired @Qualifier("saveUpdatesToCaches")
     private OneToOneValueTransformer saveUpdatesToCaches;

@@ -1,4 +1,4 @@
-package com.spacesoldier.rservice.streaming.mbus.adapters;
+package com.spacesoldier.rservice.streaming.mbus.channels;
 
 import lombok.Getter;
 import org.slf4j.Logger;
@@ -12,7 +12,7 @@ import java.util.function.Consumer;
 
 import static reactor.core.publisher.Sinks.EmitResult.*;
 
-public class MonoWire {
+public class MonoChannel {
 
     @Getter
     private String adapterName;
@@ -23,7 +23,7 @@ public class MonoWire {
     @Getter
     private Mono monoToSubscribe;
 
-    public MonoWire(String adapterName){
+    public MonoChannel(String adapterName){
         this.loopbackSink = Sinks.one();
         this.monoToSubscribe = this.loopbackSink.asMono()
                 .publishOn(Schedulers.boundedElastic()); // let it be a cold source, or use .share(); // if we want a hot source

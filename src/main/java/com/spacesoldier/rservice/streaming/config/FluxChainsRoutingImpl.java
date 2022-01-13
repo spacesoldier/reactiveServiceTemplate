@@ -1,6 +1,6 @@
 package com.spacesoldier.rservice.streaming.config;
 
-import com.spacesoldier.rservice.streaming.mbus.bus.FluxBus;
+import com.spacesoldier.rservice.streaming.mbus.providers.FluxProvider;
 import com.spacesoldier.rservice.streaming.entities.FluxRoutedEnvelope;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,7 +12,7 @@ public class FluxChainsRoutingImpl {
     private static final Logger logger = LoggerFactory.getLogger("flux to flux");
 
     public static Function<FluxRoutedEnvelope,String> routeEnvelopeToFlux(
-            FluxBus fluxManager
+            FluxProvider fluxManager
     ){
         String logMsgTemplate = "route %s to %s";
         return envelope -> {

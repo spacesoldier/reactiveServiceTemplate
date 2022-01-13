@@ -1,6 +1,6 @@
-package com.spacesoldier.rservice.streaming.mbus.bus;
+package com.spacesoldier.rservice.streaming.mbus.providers;
 
-import com.spacesoldier.rservice.streaming.mbus.adapters.FluxWire;
+import com.spacesoldier.rservice.streaming.mbus.channels.FluxChannel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
@@ -12,23 +12,23 @@ import java.util.function.Consumer;
 // some sort of a dynamic storage for wires
 // which could be used for connecting the reactive streams
 // with a number of subscribers
-public class FluxBus {
-    private Map<String, FluxWire> requestStreams = new HashMap<>();
+public class FluxProvider {
+    private Map<String, FluxChannel> requestStreams = new HashMap<>();
 
     private final String unitName = "flux manager";
     private final Logger logger = LoggerFactory.getLogger(unitName);
 
-    public FluxWire newStream(String streamName){
-        FluxWire stream = null;
+    public FluxChannel newStream(String streamName){
+        FluxChannel stream = null;
         if (!requestStreams.containsKey(streamName)){
-            stream = new FluxWire(streamName);
+            stream = new FluxChannel(streamName);
             requestStreams.put(streamName, stream);
         }
         return stream;
     }
 
-    private FluxWire streamOnDemand(String streamName){
-        FluxWire result = null;
+    private FluxChannel streamOnDemand(String streamName){
+        FluxChannel result = null;
         if (!requestStreams.containsKey(streamName)){
             result = newStream(streamName);
             logger.info(String.format("New stream: %s", streamName));

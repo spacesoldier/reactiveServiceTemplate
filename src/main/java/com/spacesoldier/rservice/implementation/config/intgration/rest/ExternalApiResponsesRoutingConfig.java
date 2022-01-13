@@ -6,7 +6,7 @@ import com.spacesoldier.rservice.entities.external.io.ErrorCallResponse;
 import com.spacesoldier.rservice.entities.external.io.ExternalCallRequestAggregate;
 import com.spacesoldier.rservice.entities.external.io.SuccessCallResultEnvelope;
 import com.spacesoldier.rservice.entities.io.IncomingRequestEnvelope;
-import com.spacesoldier.rservice.streaming.mbus.bus.FluxBus;
+import com.spacesoldier.rservice.streaming.mbus.providers.FluxProvider;
 import org.apache.kafka.streams.KeyValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -20,7 +20,7 @@ public class ExternalApiResponsesRoutingConfig {
 
     @Autowired
     @Qualifier("FluxWiringManager")
-    private FluxBus fluxManager;
+    private FluxProvider fluxManager;
 
     @Bean(name="onFailCatalogRsHandler")
     public BiConsumer<KeyValue,Object> onFailConsumer(){

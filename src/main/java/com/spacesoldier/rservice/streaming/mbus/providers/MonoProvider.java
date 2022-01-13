@@ -1,6 +1,6 @@
-package com.spacesoldier.rservice.streaming.mbus.bus;
+package com.spacesoldier.rservice.streaming.mbus.providers;
 
-import com.spacesoldier.rservice.streaming.mbus.adapters.MonoWire;
+import com.spacesoldier.rservice.streaming.mbus.channels.MonoChannel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
@@ -11,23 +11,23 @@ import java.util.function.Consumer;
 
 // some sort of a dynamic storage for wires
 // which could be used for connecting the reactive requests with responses
-public class MonoBus {
-    private Map<String, MonoWire> requestWires = new HashMap<>();
+public class MonoProvider {
+    private Map<String, MonoChannel> requestWires = new HashMap<>();
 
     private final String unitName = "mono wiring manager";
     private final Logger logger = LoggerFactory.getLogger(unitName);
 
-    public MonoWire newWire(String wireId){
-        MonoWire stream = null;
+    public MonoChannel newWire(String wireId){
+        MonoChannel stream = null;
         if (!requestWires.containsKey(wireId)){
-            stream = new MonoWire(wireId);
+            stream = new MonoChannel(wireId);
             requestWires.put(wireId, stream);
         }
         return stream;
     }
 
-    private MonoWire wireOnDemand(String wireId){
-        MonoWire result = null;
+    private MonoChannel wireOnDemand(String wireId){
+        MonoChannel result = null;
         if (!requestWires.containsKey(wireId)){
             result = newWire(wireId);
             logger.info(String.format("New request wiring: %s", wireId));

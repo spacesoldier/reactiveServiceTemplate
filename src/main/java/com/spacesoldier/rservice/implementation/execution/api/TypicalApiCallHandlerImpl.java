@@ -1,8 +1,8 @@
 package com.spacesoldier.rservice.implementation.execution.api;
 
 import com.spacesoldier.rservice.entities.io.IncomingRequestEnvelope;
-import com.spacesoldier.rservice.streaming.mbus.bus.FluxBus;
-import com.spacesoldier.rservice.streaming.mbus.bus.MonoBus;
+import com.spacesoldier.rservice.streaming.mbus.providers.FluxProvider;
+import com.spacesoldier.rservice.streaming.mbus.providers.MonoProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -15,10 +15,10 @@ import java.util.UUID;
 public class TypicalApiCallHandlerImpl {
 
     @Autowired @Qualifier("MonoWiringManager")
-    private MonoBus monoManager;
+    private MonoProvider monoManager;
 
     @Autowired @Qualifier("FluxWiringManager")
-    private FluxBus fluxManager;
+    private FluxProvider fluxManager;
 
     public Mono<String> handleRequest(ServerWebExchange exchange) {
 

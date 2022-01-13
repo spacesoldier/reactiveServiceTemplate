@@ -1,4 +1,4 @@
-package com.spacesoldier.rservice.streaming.mbus.adapters;
+package com.spacesoldier.rservice.streaming.mbus.channels;
 
 import lombok.Getter;
 import org.slf4j.Logger;
@@ -12,7 +12,7 @@ import java.util.function.Consumer;
 
 import static reactor.core.publisher.Sinks.EmitResult.*;
 
-public class FluxWire {
+public class FluxChannel {
     @Getter
     private String adapterName;
 
@@ -55,7 +55,7 @@ public class FluxWire {
         }
     };
 
-    public FluxWire(String adapterName){
+    public FluxChannel(String adapterName){
         this.loopbackSink = Sinks.many().multicast().onBackpressureBuffer(512);
         this.streamToSubscribe = this.loopbackSink.asFlux()
                 .publishOn(

@@ -4,7 +4,7 @@ package com.spacesoldier.rservice.implementation.execution.logic;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.spacesoldier.rservice.entities.internal.queries.CommonAPIResponse;
-import com.spacesoldier.rservice.streaming.mbus.bus.MonoBus;
+import com.spacesoldier.rservice.streaming.mbus.providers.MonoProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -18,7 +18,7 @@ public class AggregateResponseImpl {
 
     private static final Logger logger = LoggerFactory.getLogger(UNIT_NAME);
 
-    public static Function<CommonAPIResponse,String> sendResponseBodyForSuccessResult(MonoBus monoManager){
+    public static Function<CommonAPIResponse,String> sendResponseBodyForSuccessResult(MonoProvider monoManager){
 
         String sysLogMsgTemplate = "[%s]: resolve response %s";
 
